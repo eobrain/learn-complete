@@ -1,8 +1,10 @@
 import { getRandomPage } from "./wikipedia.js";
 
-/* Global $prelude */
+/* Global $prelude $articleTitle */
 
 (async () => {
-    $prelude.innerText = await getRandomPage('en');
+    const {title, text} = await getRandomPage('en');
+    $articleTitle.innerText = title;
+    $prelude.innerText = text;
 })()
 
