@@ -26,6 +26,7 @@ function updateScore() {
         theWord = word
         $prelude.innerText = prelude;
         $word.style.width = `${word.length * 0.7}em`;
+        $word.placeholder = word.replace(/./g, ' -');
         updateScore();
     }
     advance()
@@ -35,16 +36,13 @@ function updateScore() {
         if ($word.value.length >= theWord.length) {
             if ($word.value === theWord) {
                 ++right
-                console.log('Correct!');
             } else {
                 ++wrong
-                console.log('Wrong!');
             }
             $word.value = '';
             advance();
         } else if (!theWord.startsWith($word.value)) {
             ++wrong
-            console.log('Wrong!');
             $word.value = '';
             advance();
         }
