@@ -12,7 +12,7 @@ function updateScore() {
 
 
 (async () => {
-    const { title, text } = await getRandomPage('en');
+    const { title, text } = await getRandomPage('fr');
     $articleTitle.innerText = title;
     const textObj = new Text(text);
     let theWord = undefined

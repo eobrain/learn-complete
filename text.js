@@ -1,7 +1,7 @@
 export class Text {
 
     constructor(text) {
-        this.iterator = text.matchAll(/\b([a-z]+)\b/g)
+        this.iterator = text.matchAll(/\b([a-z\u00E0-\u00F6\u00F8-\u00FC]+)\b/g)
         this.text = text;
 
     }
