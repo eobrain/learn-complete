@@ -1,7 +1,14 @@
 import { getRandomPage } from "./wikipedia.js";
 import { Text } from "./text.js";
 
-/* Global $prelude $articleTitle $word */
+/* Global $prelude $articleTitle $word $score*/
+
+let right = 0
+let wrong = 0
+
+function updateScore() {
+    $score.innerText = `${Math.round(100 * right / (right + wrong))}`
+}
 
 
 (async () => {
@@ -19,6 +26,7 @@ import { Text } from "./text.js";
         theWord = word
         $prelude.innerText = prelude;
         $word.style.width = `${word.length * 0.7}em`;
+        updateScore();
     }
     advance()
 
@@ -26,13 +34,16 @@ import { Text } from "./text.js";
         $word.value = $word.value.toLowerCase();
         if ($word.value.length >= theWord.length) {
             if ($word.value === theWord) {
+                ++right
                 console.log('Correct!');
             } else {
+                ++wrong
                 console.log('Wrong!');
             }
             $word.value = '';
             advance();
         } else if (!theWord.startsWith($word.value)) {
+            ++wrong
             console.log('Wrong!');
             $word.value = '';
             advance();
