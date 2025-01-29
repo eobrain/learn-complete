@@ -19,6 +19,9 @@ function updateScore () {
   function advance () {
     const { done, value } = textObj.next()
     if (done) {
+      const { text } = value
+      $word.style.display = 'none'
+      $prelude.innerText = text
       return
     }
     const { prelude, word } = value

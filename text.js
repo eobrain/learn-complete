@@ -7,7 +7,8 @@ export class Text {
   next () {
     const { done, value } = this.iterator.next()
     if (done) {
-      return { done }
+      const text = this.text
+      return { done, value: { text } }
     }
     const { index } = value
     const word = value[0]
