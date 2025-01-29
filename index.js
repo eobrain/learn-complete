@@ -30,7 +30,12 @@ function updateScore () {
   }
   advance()
 
-  $word.addEventListener('input', () => {
+  $word.addEventListener('keydown', event => {
+    console.log(event.key)
+    if (event.key !== 'Enter' && event.key !== 'Tab' && event.key !== ' ') {
+      return
+    }
+    event.preventDefault()
     $word.value = $word.value.toLowerCase()
     if ($word.value.length >= theWord.length) {
       if ($word.value === theWord) {

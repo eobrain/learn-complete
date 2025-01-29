@@ -1,10 +1,10 @@
 export class Text {
-  constructor(text) {
+  constructor (text) {
     this.iterator = text.matchAll(/(?<!\p{Letter})([\p{Lowercase_Letter}'-]+)(?!\p{Letter})/gu)
     this.text = text
   }
 
-  next() {
+  next () {
     const { done, value } = this.iterator.next()
     if (done) {
       return { done }
