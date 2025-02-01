@@ -6,6 +6,8 @@ import { Text } from './text.js'
 let right = 0
 let wrong = 0
 
+const sleep = async ms => new Promise(resolve => setTimeout(resolve, ms))
+
 function updateScore () {
   $score.innerText = `${Math.round(100 * right / (right + wrong))}`
 }
@@ -35,13 +37,19 @@ async function game (lang) {
   }
   advance()
 
-  $word.addEventListener('keydown', event => {
-    if (event.key !== 'Enter' && event.key !== 'Tab' && event.key !== ' ') {
+  $word.addEventListener('input', async event => {
+    if (event.data !== ' ') {
+      console.log(event)
+      // Keep accepting charactes
       return
     }
+
+    await sleep(1)
+
     event.preventDefault()
 
-    $word.value = $word.value.toLowerCase()
+    // Go to next word
+    $word.value = $word.value.trim().toLowerCase()
     if ($word.value === theWord) {
       ++right
     } else {
