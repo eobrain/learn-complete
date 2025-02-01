@@ -1,27 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <!--meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"-->
     <title>Predict the next word</title>
-    <link rel="stylesheet" href="style.css">
+    <!--link rel="stylesheet" href="style.css"-->
     <script type="module" src="index.js"></script>
 </head>
 
 <body>
+    <ons-page>
+        <ons-toolbar>
+            <div class=”center”>
+                <select id="$lang" class="select-input">
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                    <option value="es">Español</option>
+                  </select>
+            </div>
+        </ons-toolbar>
+        
 
-    <button id="$en">Predict the next word</button>
-    <button id="$fr">Prédire le mot suivant</button>
-    <button id="$es">Predecir la siguiente palabra</button>
-    <h2>Score</h2>
-    <p><span id="$score"></span>%</p>
-    <h2 id="$articleTitle">
-        </h1>
+        <h2>Score</h2>
+        <p><span id="$score"></span>%</p>
+        <h2 id="$articleTitle"></h2>
         <p>
             <span id="$prelude"></span>
-            <input id="$word" type="text" id="input">
+            <input id="$word" class="text-input text-input--underbar" type="text" id="input">
         </p>
+
+    </ons-page>
+
 
 </body>
 

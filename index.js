@@ -1,7 +1,7 @@
 import { getRandomPage } from './wikipedia.js'
 import { Text } from './text.js'
 
-/* global $prelude, $articleTitle, $word, $score, $en, $fr, $es */
+/* global $prelude, $articleTitle, $word, $score, $lang */
 
 let right = 0
 let wrong = 0
@@ -60,6 +60,13 @@ async function game (lang) {
   })
 }
 
-$en.addEventListener('click', _ => { game('en') })
-$fr.addEventListener('click', _ => { game('fr') })
-$es.addEventListener('click', _ => { game('es') })
+const browserLang = navigator.language.substring(0, 2)
+for (const $option of $lang.children) {
+  if ($option.value === browserLang) {
+    $option.selected = true
+    break
+  }
+}
+
+$lang.addEventListener('change', event => { game($lang.value) })
+game($lang.value)
