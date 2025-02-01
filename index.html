@@ -20,18 +20,22 @@
                     <option value="en">English</option>
                     <option value="fr">Français</option>
                     <option value="es">Español</option>
-                  </select>
+                </select>
             </div>
         </ons-toolbar>
-        
+
+        <div>
+            <div class="card">
+                <h2 id="$articleTitle" class="card__title"></h2>
+                <div class="card__content"><span id="$prelude"></span>
+                    <input id="$word" class="text-input text-input--underbar" type="text" id="input">
+                </div>
+            </div>
+        </div>
+
 
         <h2>Score</h2>
         <p><span id="$score"></span>%</p>
-        <h2 id="$articleTitle"></h2>
-        <p>
-            <span id="$prelude"></span>
-            <input id="$word" class="text-input text-input--underbar" type="text" id="input">
-        </p>
 
     </ons-page>
 
