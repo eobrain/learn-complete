@@ -4,3 +4,6 @@
 ons-range.range {
     width: 100%;
 }
+input[type="text"] {
+    font-size: 2em;
+}
