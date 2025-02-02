@@ -1,18 +1,18 @@
 import { getRandomPage } from './wikipedia.js'
 import { Text } from './text.js'
 
-/* global $prelude, $articleTitle, $word, $score, $lang */
+/* global ons, $prelude, $articleTitle, $word, $score, $lang, $scroll */
 
 let right = 0
 let wrong = 0
 
 const sleep = async ms => new Promise(resolve => setTimeout(resolve, ms))
 
-function updateScore () {
+function updateScore() {
   $score.innerText = `${Math.round(100 * right / (right + wrong))}`
 }
 
-async function game (lang) {
+async function game(lang) {
   const { title, text } = await getRandomPage(lang)
   $articleTitle.innerText = title
   $word.style.display = 'inline'
@@ -20,7 +20,7 @@ async function game (lang) {
   const textObj = new Text(text)
   let theWord
 
-  function advance () {
+  function advance() {
     const { done, value } = textObj.next()
     if (done) {
       const { text } = value
@@ -37,10 +37,9 @@ async function game (lang) {
   }
   advance()
 
-  $word.addEventListener('input', async event => {
+  $word.oninput = async event => {
     if (event.data !== ' ') {
-      console.log(event)
-      // Keep accepting charactes
+      // Keep accepting characters
       return
     }
 
@@ -50,14 +49,26 @@ async function game (lang) {
 
     // Go to next word
     $word.value = $word.value.trim().toLowerCase()
+
     if ($word.value === theWord) {
       ++right
+      $scroll.insertAdjacentHTML('afterbegin', `
+        <ons-list-item>
+          <div class="list-item__title">✅ ${$word.value}</div>
+        </ons-list-item>
+        `)
     } else {
       ++wrong
+      $scroll.insertAdjacentHTML('afterbegin', `
+        <ons-list-item>
+          <div class="list-item__title wrong">❌ ${$word.value}</div>
+          <div class="list-item__subtitle">${theWord}</div>
+        </ons-list-item>
+        `)
     }
     $word.value = ''
     advance()
-  })
+  }
 }
 
 const browserLang = navigator.language.substring(0, 2)
