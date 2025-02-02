@@ -1,7 +1,7 @@
 import { getRandomPage } from './wikipedia.js'
 import { Text } from './text.js'
 
-/* global ons, $prelude, $articleTitle, $word, $score, $lang, $scroll, $restart */
+/* global ons, $prelude, $articleTitle, $word, $percentSlider, $percentText, $lang, $scroll, $restart */
 
 let right = 0
 let wrong = 0
@@ -9,7 +9,14 @@ let wrong = 0
 const sleep = async ms => new Promise(resolve => setTimeout(resolve, ms))
 
 function updateScore () {
-  $score.value = `${Math.round(100 * right / (right + wrong))}`
+  if (right + wrong === 0) {
+    $percentSlider.visibility = 'hidden'
+    $percentText.innerText = ''
+    return
+  }
+  const percent = Math.round(100 * right / (right + wrong))
+  $percentSlider.value = percent
+  $percentText.innerText = percent
 }
 
 const instructions = {
@@ -21,7 +28,9 @@ const instructions = {
 const instructionsShown = { en: false, fr: false, es: false }
 
 async function game (lang) {
+  right = wrong = 0
   $restart.style.visibility = 'hidden'
+  $scroll.innerHTML = ''
   const { title, text } = await getRandomPage(lang)
   $articleTitle.innerText = title
   $word.style.display = 'inline'
