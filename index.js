@@ -16,6 +16,7 @@ async function game (lang) {
   const { title, text } = await getRandomPage(lang)
   $articleTitle.innerText = title
   $word.style.display = 'inline'
+  $word.focus()
   $prelude.innerText = text
   const textObj = new Text(text)
   let theWord
@@ -31,7 +32,7 @@ async function game (lang) {
     const { prelude, word } = value
     theWord = word
     $prelude.innerText = prelude
-    $word.style.width = `${word.length * 1.2}em`
+    $word.style.width = `${word.length * 1.1}em`
     $word.placeholder = `(${word.length})` // word.replace(/./g, ' -')
     updateScore()
   }
