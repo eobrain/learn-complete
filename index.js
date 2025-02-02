@@ -1,14 +1,14 @@
 import { getRandomPage } from './wikipedia.js'
 import { Text } from './text.js'
 
-/* global ons, $prelude, $articleTitle, $word, $score, $lang, $scroll */
+/* global ons, $prelude, $articleTitle, $word, $score, $lang, $scroll, $restart */
 
 let right = 0
 let wrong = 0
 
 const sleep = async ms => new Promise(resolve => setTimeout(resolve, ms))
 
-function updateScore() {
+function updateScore () {
   $score.value = `${Math.round(100 * right / (right + wrong))}`
 }
 
@@ -20,7 +20,8 @@ const instructions = {
 
 const instructionsShown = { en: false, fr: false, es: false }
 
-async function game(lang) {
+async function game (lang) {
+  $restart.style.visibility = 'hidden'
   const { title, text } = await getRandomPage(lang)
   $articleTitle.innerText = title
   $word.style.display = 'inline'
@@ -29,18 +30,19 @@ async function game(lang) {
   const textObj = new Text(text)
   let theWord
 
-  function advance() {
+  function advance () {
     const { done, value } = textObj.next()
     if (done) {
       const { text } = value
       $word.style.display = 'none'
       $prelude.innerText = text
+      $restart.style.visibility = 'visible'
       return
     }
     const { prelude, word } = value
     theWord = word
     $prelude.innerText = prelude
-    $word.style.width = `${word.length * 1.1}em`
+    $word.style.width = `${word.length * 1.2}em`
     $word.placeholder = `(${word.length})` // word.replace(/./g, ' -')
     updateScore()
   }
@@ -96,3 +98,5 @@ for (const $option of $lang.children) {
 
 $lang.addEventListener('change', event => { game($lang.value) })
 game($lang.value)
+
+$restart.onclick = () => { game($lang.value) }
