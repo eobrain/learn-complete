@@ -1,3 +1,6 @@
 .wrong {
     text-decoration: line-through;
 }
+ons-range.range {
+    width: 100%;
+}

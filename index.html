@@ -14,7 +14,6 @@
 
 <body>
     <ons-page id="page">
-
         <ons-toolbar>
             <div class=”center”>
                 <select id="$lang" class="select-input">
@@ -24,18 +23,14 @@
                 </select>
             </div>
         </ons-toolbar>
-
-        <p><span id="$score"></span>%</p>
         <ons-card>
             <h2 id="$articleTitle" class="title"></h2>
             <div class="content"><span id="$prelude"></span>
                 <input id="$word" class="text-input text-input--underbar" type="text" id="input">
             </div>
         </ons-card>
-
+        <ons-range id="$score" disabled></ons-range>
         <ons-list id="$scroll"></ons-list>
-
-
     </ons-page>
 
 
