@@ -12,17 +12,28 @@ function updateScore () {
   if (right + wrong === 0) {
     $percentSlider.visibility = 'hidden'
     $percentText.innerText = ''
-    return
+    return 100
   }
   const percent = Math.round(100 * right / (right + wrong))
   $percentSlider.value = percent
   $percentText.innerText = percent
+  return percent
 }
 
 const instructions = {
   en: { title: 'Instructions', message: 'You will see the beginning of a random Wikipedia article. Type the word that comes next and press space.' },
   fr: { title: 'Instructions', message: 'Vous verrez le début d\'un article Wikipédia aléatoire. Tapez le mot qui vient après et appuyez sur la barre d\'espace.' },
   es: { title: 'Instrucciones', message: 'Verás el comienzo de un artículo aleatorio de Wikipedia. Escribe la palabra que viene a continuación y pulsa la barra espaciadora.' }
+}
+const loseMessage = {
+  en: { title: 'You lost!', message: 'Game over, because you guessed less than 50% correct.' },
+  fr: { title: 'Vous avez perdu!', message: 'Fin du jeu, car vous avez deviné moins de 50% de bonnes réponses.' },
+  es: { title: '¡Perdiste!', message: 'Juego terminado, porque adivinaste menos del 50% correcto.' }
+}
+const winMessage = {
+  en: { title: 'You won!', message: 'Game over, because you got to the end with 50% or more answers correc,t' },
+  fr: { title: 'Vous avez gagné!', message: 'Fin du jeu, car vous êtes arrivé à la fin avec 50% ou plus de bonnes réponses.' },
+  es: { title: '¡Ganaste!', message: 'Juego terminado, porque llegaste al final con 50% o más de respuestas correctas.' }
 }
 
 const instructionsShown = { en: false, fr: false, es: false }
@@ -39,23 +50,28 @@ async function game (lang) {
   const textObj = new Text(text)
   let theWord
 
-  function advance () {
+  async function advance () {
     const { done, value } = textObj.next()
     if (done) {
       const { text } = value
       $word.style.display = 'none'
       $prelude.innerText = text
       $restart.style.visibility = 'visible'
+      await ons.notification.alert(winMessage[lang])
       return
     }
     const { prelude, word } = value
     theWord = word
     $prelude.innerText = prelude
     $word.style.width = `${word.length * 1.2}em`
-    $word.placeholder = `(${word.length})` // word.replace(/./g, ' -')
-    updateScore()
+    $word.placeholder = `(${word.length})`
+    if (updateScore() < 50) {
+      await ons.notification.alert(loseMessage[lang])
+      $restart.style.visibility = 'visible'
+      game($lang.value)
+    }
   }
-  advance()
+  await advance()
 
   $word.oninput = async event => {
     if (event.data !== ' ') {
@@ -87,7 +103,7 @@ async function game (lang) {
         `)
     }
     $word.value = ''
-    advance()
+    await advance()
   }
 
   if (!instructionsShown[lang]) {
