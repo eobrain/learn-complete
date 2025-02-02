@@ -1,18 +1,26 @@
 import { getRandomPage } from './wikipedia.js'
 import { Text } from './text.js'
 
-/* global $prelude, $articleTitle, $word, $score, $lang, $scroll */
+/* global ons, $prelude, $articleTitle, $word, $score, $lang, $scroll */
 
 let right = 0
 let wrong = 0
 
 const sleep = async ms => new Promise(resolve => setTimeout(resolve, ms))
 
-function updateScore () {
+function updateScore() {
   $score.value = `${Math.round(100 * right / (right + wrong))}`
 }
 
-async function game (lang) {
+const instructions = {
+  en: { title: 'Instructions', message: 'You will see the beginning of a random Wikipedia article. Type the word that comes next and press space.' },
+  fr: { title: 'Instructions', message: 'Vous verrez le début d\'un article Wikipédia aléatoire. Tapez le mot qui vient après et appuyez sur la barre d\'espace.' },
+  es: { title: 'Instrucciones', message: 'Verás el comienzo de un artículo aleatorio de Wikipedia. Escribe la palabra que viene a continuación y pulsa la barra espaciadora.' }
+}
+
+const instructionsShown = { en: false, fr: false, es: false }
+
+async function game(lang) {
   const { title, text } = await getRandomPage(lang)
   $articleTitle.innerText = title
   $word.style.display = 'inline'
@@ -21,7 +29,7 @@ async function game (lang) {
   const textObj = new Text(text)
   let theWord
 
-  function advance () {
+  function advance() {
     const { done, value } = textObj.next()
     if (done) {
       const { text } = value
@@ -70,6 +78,12 @@ async function game (lang) {
     $word.value = ''
     advance()
   }
+
+  if (!instructionsShown[lang]) {
+    await ons.notification.alert(instructions[lang])
+    instructionsShown[lang] = true
+  }
+  $word.focus()
 }
 
 const browserLang = navigator.language.substring(0, 2)
